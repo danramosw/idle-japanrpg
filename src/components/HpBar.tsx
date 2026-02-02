@@ -1,32 +1,35 @@
 "use client";
 
 export default function HpBar({
-  current,
-  max
+  hp,
+  maxHp
 }: {
-  current: number;
-  max: number;
+  hp: number;
+  maxHp: number;
 }) {
-  const percent = Math.floor((current / max) * 100);
+  const percent = Math.floor((hp / maxHp) * 100);
 
   return (
-    <div>
+    <div style={{ marginBottom: 10 }}>
       <p>
-        HP: {current}/{max}
+        ❤️ HP: {hp}/{maxHp}
       </p>
+
       <div
         style={{
           width: "100%",
-          height: 10,
+          height: 14,
           background: "#222",
-          borderRadius: 6
+          borderRadius: 8,
+          overflow: "hidden"
         }}
       >
         <div
           style={{
             width: `${percent}%`,
             height: "100%",
-            background: "#990000"
+            background: percent < 30 ? "darkred" : "red",
+            transition: "0.2s"
           }}
         />
       </div>

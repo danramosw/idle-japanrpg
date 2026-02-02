@@ -3,39 +3,48 @@
 import { useEffect, useState } from "react";
 import { rollDrop } from "@/lib/drops";
 import { fightEnemy } from "@/lib/combat";
+import { Item } from "@/types/game";
 
-export default function Exploration() {
+export default function Exploration({
+  gold,
+  setGold,
+  inventory,
+  setInventory,
+  addLog
+}: {
+  gold: number;
+  setGold: (v: any) => void;
+  inventory: Item[];
+  setInventory: (v: any) => void;
+  addLog: (text: string) => void;
+}) {
   const [progress, setProgress] = useState(0);
-  const [log, setLog] = useState<string[]>([]);
-  const [gold, setGold] = useState(0);
   const [level] = useState(1);
-
-  function addLog(text: string) {
-    setLog((prev) => [text, ...prev.slice(0, 8)]);
-  }
 
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((p) => {
         if (p >= 100) {
-          // Event trigger
           const eventRoll = Math.random();
 
           // Combat 20%
           if (eventRoll < 0.2) {
             const battle = fightEnemy(level);
             battle.log.forEach(addLog);
-            setGold((g) => g + battle.gold);
+            setGold((g: number) => g + battle.gold);
           } else {
             const gain = 10 + Math.floor(Math.random() * 15);
             addLog(`🌙 Você explora... +${gain} gold`);
-            setGold((g) => g + gain);
+            setGold((g: number) => g + gain);
           }
 
           // Drop roll
           const drop = rollDrop();
           if (drop) {
-            addLog(`🎁 Drop: ${drop.name} (${drop.rarity})`);
+            addLog(`🎁 Drop: ${drop.name}`);
+
+            // Add item to inventory
+            setInventory((prev: Item[]) => [...prev, drop]);
           }
 
           return 0;
@@ -43,7 +52,7 @@ export default function Exploration() {
 
         return p + 10;
       });
-    }, 500);
+    }, 600);
 
     return () => clearInterval(interval);
   }, [level]);
@@ -51,10 +60,8 @@ export default function Exploration() {
   return (
     <div>
       <h3>Exploração Idle</h3>
-
       <p>Gold: {gold}</p>
 
-      {/* Progress bar */}
       <div
         style={{
           width: "100%",
@@ -72,13 +79,6 @@ export default function Exploration() {
             transition: "0.2s"
           }}
         />
-      </div>
-
-      {/* Log */}
-      <div style={{ marginTop: 10, fontSize: 12 }}>
-        {log.map((l, i) => (
-          <p key={i}>{l}</p>
-        ))}
       </div>
     </div>
   );

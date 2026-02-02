@@ -1,30 +1,23 @@
-export function fightEnemy(level: number) {
+export function fightEnemy(level: number, weaponBonus: number = 0) {
   const enemyHp = 30 + level * 10;
-  const enemyAtk = 5 + level * 2;
+  const enemyDamage = 8 + level * 2;
 
-  const playerAtk = 10 + level * 3;
+  const playerDamage = 12 + weaponBonus;
 
-  let log: string[] = [];
-  let hp = enemyHp;
-
-  while (hp > 0) {
-    const dmg = Math.floor(playerAtk + Math.random() * 8);
-    hp -= dmg;
-
-    log.push(`⚔️ Você golpeia o Yokai causando -${dmg} HP`);
-
-    if (hp <= 0) {
-      log.push("🏆 Yokai derrotado!");
-      break;
-    }
-
-    const enemyDmg = Math.floor(enemyAtk + Math.random() * 5);
-    log.push(`👹 Yokai contra-ataca causando -${enemyDmg} HP`);
-  }
+  const win = playerDamage >= enemyHp;
 
   return {
-    win: true,
-    log,
-    gold: 20 + level * 5
+    win,
+    damageTaken: win ? enemyDamage : enemyDamage * 2,
+    gold: win ? 40 + level * 10 : 10,
+    log: win
+      ? [
+          `⚔️ Você derrotou o Yokai!`,
+          `💥 Você recebeu ${enemyDamage} de dano`
+        ]
+      : [
+          `💀 Você foi ferido gravemente!`,
+          `💥 Você recebeu ${enemyDamage * 2} de dano`
+        ]
   };
 }

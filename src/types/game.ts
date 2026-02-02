@@ -1,15 +1,21 @@
-export type ItemRarity = "common" | "rare" | "epic";
+export type Rarity =
+  | "common"
+  | "uncommon"
+  | "rare"
+  | "epic"
+  | "legendary";
 
-export type Item = {
+export type ItemType = "weapon" | "potion" | "misc";
+
+export interface Item {
   id: string;
   name: string;
-  rarity: ItemRarity;
-};
+  rarity: Rarity;
+  type?: ItemType;
+}
 
-export type Player = {
-  level: number;
+export interface Player {
   hp: number;
   maxHp: number;
-  gold: number;
-  inventory: Item[];
-};
+  weapon?: Item;
+}
