@@ -1,10 +1,11 @@
-export type Achievement = {
-  id: string
-  title: string
-  description?: string
-  unlockedAt?: string
-}
+export function checkAchievements(explores: number) {
+  if (explores >= 50) {
+    return "🏆 Conquista: Explorador do Bambu!";
+  }
 
-export const achievements: Achievement[] = [
-  { id: 'first-kill', title: 'Primeira Vitória', description: 'Derrote seu primeiro inimigo' },
-]
+  if (explores >= 200) {
+    return "🏆 Conquista: Caçador de Yokai!";
+  }
+
+  return null;
+}

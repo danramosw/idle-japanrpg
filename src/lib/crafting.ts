@@ -1,13 +1,16 @@
-export function canCraft(inventory: Record<string, number>, recipe: Record<string, number>) {
-  for (const key of Object.keys(recipe)) {
-    if ((inventory[key] || 0) < recipe[key]) return false
-  }
-  return true
-}
+import { Item } from "@/types/game";
 
-export function craft(inventory: Record<string, number>, recipe: Record<string, number>) {
-  if (!canCraft(inventory, recipe)) throw new Error('Ingredientes insuficientes')
-  const copy = { ...inventory }
-  for (const key of Object.keys(recipe)) copy[key] -= recipe[key]
-  return copy
+export function craftPotion(materials: Item[]): Item | null {
+  const hasHerb = materials.find((i) => i.id === "herb");
+  const hasJade = materials.find((i) => i.id === "jade");
+
+  if (hasHerb && hasJade) {
+    return {
+      id: "potion",
+      name: "Poção Espiritual",
+      rarity: "rare"
+    };
+  }
+
+  return null;
 }
