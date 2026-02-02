@@ -1,29 +1,26 @@
 import { Item } from "@/types/game";
 
-export function rollDrop(): Item | null {
-  const r = Math.random();
-
-  if (r < 0.7) return null;
-
-  if (r < 0.9) {
-    return {
-      id: "herb",
-      name: "Ervas Sagradas",
-      rarity: "common"
-    };
-  }
-
-  if (r < 0.98) {
-    return {
-      id: "jade",
-      name: "Jade Místico",
-      rarity: "rare"
-    };
-  }
-
-  return {
+const drops: Item[] = [
+  {
     id: "katana",
-    name: "Katana do Oni",
-    rarity: "epic"
-  };
+    name: "Katana Enferrujada",
+    rarity: "common",
+    type: "weapon"
+  },
+  {
+    id: "potion",
+    name: "Poção Espiritual",
+    rarity: "rare",
+    type: "potion"
+  }
+];
+
+export function rollDrop(): Item | null {
+  const chance = Math.random();
+
+  if (chance < 0.35) {
+    return drops[Math.floor(Math.random() * drops.length)];
+  }
+
+  return null;
 }
