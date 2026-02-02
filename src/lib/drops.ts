@@ -1,9 +1,29 @@
-export function getRandomInt(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
+import { Item } from "@/types/game";
 
-export function rollDrop(monsterRarity: number) {
-  if (monsterRarity > 80) return ['rare-sword']
-  if (monsterRarity > 40) return ['potion']
-  return ['junk']
+export function rollDrop(): Item | null {
+  const r = Math.random();
+
+  if (r < 0.7) return null;
+
+  if (r < 0.9) {
+    return {
+      id: "herb",
+      name: "Ervas Sagradas",
+      rarity: "common"
+    };
+  }
+
+  if (r < 0.98) {
+    return {
+      id: "jade",
+      name: "Jade Místico",
+      rarity: "rare"
+    };
+  }
+
+  return {
+    id: "katana",
+    name: "Katana do Oni",
+    rarity: "epic"
+  };
 }
